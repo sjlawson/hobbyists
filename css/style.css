@@ -7,6 +7,14 @@ div, p, span, a, h1, h2, h3, h4, h5, h6, form {
 	margin:0px;
 	padding:0px;
 }	
+td {
+	vertical-align: top;
+	text-align: left;
+}
+.errormsg {
+	border: 1px dotted red;
+	color: red;
+}
 .wrapper {
 	margin:0px auto;
 	padding:0px;

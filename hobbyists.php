@@ -1,5 +1,59 @@
-<?php 
-function getStateSelect($selected_state = "IN") {
+<?php
+/* For this small application, this proceedural script will act as a controller as well as view
+ * 
+ */
+
+/**
+ * using autoload register is overkill, but an app like this might normally be parter of a larger whole in which using 
+ * spl_autoload_register might be preferable
+ * 
+ */
+spl_autoload_register(function($className) {
+	@require_once ("classes/$className.class.php");
+});
+
+$hobbyistModel = new HobbyistModel();
+
+$hobbyist_id = isset($_GET['id']) ? filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) : null;
+$hobbyist_data = $hobbyist_id ? $hobbyistModel->getHobbyist($hobbyist_id) : null;
+
+if( !empty( $_POST )) {
+	//sanitize input
+	$save_data = array();
+	$save_data['id'] = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+	$save_data['firstname'] = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_STRING);
+	$save_data['lastname'] = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_STRING);
+	$save_data['email'] = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+	$save_data['sex'] = filter_input(INPUT_POST, 'sex', FILTER_SANITIZE_STRING);
+	$save_data['city'] = filter_input(INPUT_POST, 'city', FILTER_SANITIZE_STRING);
+	$save_data['state'] = filter_input(INPUT_POST, 'state', FILTER_SANITIZE_STRING);
+	$save_data['comments'] = filter_input(INPUT_POST, 'comments', FILTER_SANITIZE_STRING);
+	$save_data['hobby_cycling'] = isset($_POST['hobby_cycling']) ? filter_input(INPUT_POST, 'hobby_cycling', FILTER_VALIDATE_INT) : 0;
+	$save_data['hobby_frisbee'] = isset($_POST['hobby_frisbee']) ? filter_input(INPUT_POST, 'hobby_frisbee', FILTER_VALIDATE_INT) : 0;
+	$save_data['hobby_skiing'] = isset($_POST['hobby_skiing']) ? filter_input(INPUT_POST, 'hobby_skiing', FILTER_VALIDATE_INT) : 0;
+	
+	if(empty($save_data['id'] )) unset($save_data['id']);
+	$validationResult = $hobbyistModel->setParams($save_data);
+	
+	if($validationResult !== true) {
+		// set validation error message
+		$validation_error = $validationResult["errmsg"];
+	} else {
+		if(empty($save_data['id'])) {
+			$hobbyistModel->createHobbyist();
+		} else {
+			$hobbyistModel->editHobbyist();
+		}
+	}
+	$hobbyist_data = $save_data;
+}
+
+/**
+ * Utility to create a state code selection control
+ * @param unknown_type $selected_state
+ * @return string
+ */
+function getStateSelect($selected_state = "") {
 	$stateOn = 'selected="selected"';
 	$state_list = ARRAY(
 			'AL'=>"Alabama",
@@ -54,7 +108,7 @@ function getStateSelect($selected_state = "IN") {
 			'WI'=>"Wisconsin",
 			'WY'=>"Wyoming");
 	$state_selection = '
-	<select name="state"> 
+	<select name="state">
 	<option value="" '. (!$selected_state ? $stateOn : '') .' >Select a State</option>';
 	foreach ($state_list as $state_code => $state_name) {
 		$state_selection .= "<option value='$state_code' ". ($state_code == $selected_state ? $stateOn : '') ." >$state_name</option>";
@@ -62,52 +116,6 @@ function getStateSelect($selected_state = "IN") {
 	$state_selection .= "</select>";
 	return $state_selection;
 }
-?>
 
-<!DOCTYPE HTML>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Hobbyist Manager</title> 
-  <link href="css/style.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-<div class="wrapper">
-<div class="left-gap1"><img src="images/spacer.gif" alt="#" border="0" height="1" width="6"></div>
-<div class="main">
-<div class="header">
-<div class="banner-area" >
-<h1 class="header-title">Power Your Hobbies!</h1>
-</div>
-</div>
-<div class="mid">
-<div class="mid-left"><br>
-</div>
-<div class="mid-right">
-<h1>Manage Hobbyists</h1>
-<form>
-<fieldset>
-<table >
-<tbody>
-<tr><td>First name:</td> <td><input name="firstname" size="50"></tr>
-<tr><td>Last name:</td> <td><input name="lastname" size="50"> </tr>
-<tr><td>Email:</td> <td><input name="email" size="50"> </tr>
-<tr><td>City:</td> <td><input name="city" size="50"> </tr>
-<tr><td>State: </td><td> <?php echo getStateSelect(); ?> </td></tr>
-</tbody>
-</table>
-</fieldset>
-</form>
-</div>
-</div>
-<div class="footer">
-<p class="copyright-text">Copyright 2010. Designed by <a target="_blank" href="http://www.htmltemplates.net/">htmltemplates.net</a></p>
-</div>
-</div>
-<div class="right-gap1"><img src="images/spacer.gif" alt="#" border="0" height="1" width="6"></div>
-</div>
 
-&nbsp;<a href="http://www.htmltemplates.net">
-<img src="images/footnote.gif" class="copyright" alt="html templates"></a>&nbsp;<a href="http://websitetemplates.net">
-<img src="images/footnote.gif" class="copyright" alt="websitetemplates.net"></a>&nbsp;
-</body></html>
+include "hobbyists.tpl.php";

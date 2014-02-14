@@ -81,11 +81,19 @@ ul.nav li a:hover {
 	font-weight:normal;
 }
 .banner-area {
+	background: url("../images/banner-1.jpg");
 	margin:0px;
 	padding:0px;
 	width:939px;
+	height: 257px;
 	float:left;
 }	
+.header-title {
+	position: relative;
+	margin-left: 245px;
+	margin-top: 200px;
+	color: #ffffff;
+}
 .mid {
 	margin:0px;
 	padding:0px;
@@ -95,18 +103,18 @@ ul.nav li a:hover {
 .mid-left {
 	margin:0px;
 	padding:20px 0px 20px 0px;
-	width:236px;
+	width:245px;
 	float:left;
 }
 .mid-right {
 	margin:0px;
-	padding:20px 0px 20px 0px;
-	width:703px;
+	padding:10px 0px 10px 0px;
+	width:670px;
 	float:left;
 }
 h1 {
 	margin:0px;
-	padding:10px 30px 10px 40px;
+	padding:10px 0px 10px 0px;
 	font-family:"Times New Roman", Times, serif;
 	font-size:30px;
 	text-decoration:none;
@@ -182,4 +190,10 @@ p.copyright-text {
 	border:0px;
 	height:1px;
 	width:1px;
+}
+fieldset {
+	border: 2px gray groove;
+	border-radius: 5px;         
+   -moz-border-radius: 5px;         
+   -webkit-border-radius: 5px;
 }

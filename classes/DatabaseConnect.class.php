@@ -38,6 +38,29 @@ class DatabaseConnect {
 	 * 
 	 * @param string $sql
 	 * @throws Exception
+	 * @return multitype:array
+	 */
+	public function doMultiRowGetQuery($sql) {
+		try {
+			$result = $this->mysqliUtil->query($sql);
+			$result_array = array();
+			while($row = mysqli_fetch_assoc($result)) {
+				array_push($result_array, $row);
+			}
+			if(!mysqli_error($this->mysqliUtil))
+				return $result_array;
+			else
+				echo mysqli_error($this->mysqliUtil);
+			
+		} catch (Exception $ex) {
+			throw new Exception($ex->getMessage(), $ex->getCode());
+		}
+	}
+	
+	/**
+	 * 
+	 * @param string $sql
+	 * @throws Exception
 	 * @return boolean
 	 */
 	public function doUpdateQuery($sql) {

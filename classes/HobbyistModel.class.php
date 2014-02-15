@@ -4,6 +4,7 @@ spl_autoload_register(function($className) {
 });
 
 define("HOBBYISTTABLE","hobbyists");
+define("PAGELIMIT", 20);
 
 class HobbyistModel extends HobbyistFields {
 	private $dbConn;
@@ -106,5 +107,22 @@ class HobbyistModel extends HobbyistFields {
 			throw new Exception($ex->getMessage(), $ex->getCode());
 		}
 	}
+	
+	/**
+	 * 
+	 * @param int $page
+	 * @throws Exception
+	 * @return array
+	 */
+	public function getAllHobbyistsPaged($page = 1) {
+			$offset = ($page-1) * PAGELIMIT;
+			$sql = "SELECT `id`,`firstname`,`lastname` FROM `".HOBBYISTTABLE."` LIMIT $offset,".PAGELIMIT;
+			try {
+				$result_array= $this->dbConn->doMultiRowGetQuery($sql);
+				return $result_array;
+			} catch (Exception $ex) {
+			throw new Exception($ex->getMessage(), $ex->getCode());
+			}
+		}
 
 }

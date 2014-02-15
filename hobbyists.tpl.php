@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <title>Hobbyist Manager</title> 
   <link href="css/style.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript">
+	function loadHobbyist(id) {
+	document.location.href = "hobbyists.php?id="+id+"#manage";
+	}
+  </script>
 </head>
 <body>
 <div class="wrapper">
@@ -15,10 +20,14 @@
 </div>
 </div>
 <div class="mid">
-<div class="mid-left"><br>
+<div class="mid-left">
+View/Edit Hobbyists <br />
+
+<?php echo editHobbyistCtl($hobbyistModel); ?>
+
 </div>
 <div class="mid-right">
-<h1>Manage Hobbyists</h1>
+<h1 id="manage">Manage Hobbyists</h1>
 <form method="post" />
 <input type="hidden" name='id' value="<?php echo $hobbyist_id; ?>" />
 <fieldset>
@@ -39,7 +48,7 @@
 <tr><td>State: </td><td> <?php echo getStateSelect($selected_state); ?> </td></tr>
 <tr><td>Sex: </td><td> Male <input name='sex' type="radio" value='M' 
 	<?php echo strcmp(strtoupper(@$hobbyist_data['sex']),'M') === 0 ? 'checked' : ''; ?>/> 
-	&nbsp;Female <input name='sex' type="radio" value='M' 
+	&nbsp;Female <input name='sex' type="radio" value='F' 
 	<?php echo strcmp(strtoupper(@$hobbyist_data['sex']),'F') === 0 ? 'checked' : ''; ?>/>
 </td></tr>
 <tr><td>Hobbies: </td>

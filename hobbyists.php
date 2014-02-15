@@ -43,7 +43,7 @@ if( !empty( $_POST )) {
 		if(empty($save_data['id'])) {
 			$new_id = $hobbyistModel->createHobbyist();
 			if($new_id)
-				header("Location: $url?id=$new_id&msg=savesuccess");
+				header("Location: hobbyists.php?id=$new_id&msg=savesuccess");
 		} else {
 			if($hobbyistModel->editHobbyist())
 				header("Location: $url?id=$hobbyist_id&msg=savesuccess");
@@ -51,6 +51,19 @@ if( !empty( $_POST )) {
 	}
 	$hobbyist_data = $save_data;
 }
+
+function editHobbyistCtl($hobbyistModel) {
+	$list = $hobbyistModel->getAllHobbyistsPaged();
+	$selectCtl = '<select id="select_hobbyist" size="20" style="width: 150px; margin-left: 10px;">';
+	foreach ($list as $row) {
+		$selected = $_GET['id'] == $row['id'] ? 'selected' : '';
+	$selectCtl .= '<option onclick="loadHobbyist('.$row['id'].')" '.$selected.' >'.$row['lastname'].', '. $row['firstname'].'</option>';
+	
+	}
+	$selectCtl .= '</select>';
+	return $selectCtl;
+}
+
 
 /**
  * Utility to create a state code selection control

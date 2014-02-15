@@ -134,5 +134,9 @@ function getStateSelect($selected_state = "") {
 	return $state_selection;
 }
 
+$successmsg = "";
+if(strcmp(filter_input(INPUT_GET, 'msg', FILTER_SANITIZE_STRING),'savesuccess') === 0 ) {
+	$successmsg = "Save successful!";
+}
 
 include "hobbyists.tpl.php";

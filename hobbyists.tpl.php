@@ -34,6 +34,9 @@ View/Edit Hobbyists <br />
 <div class='errormsg' <?php echo isset($validation_error) ? 'style="display: block !important;"' : 'style="display: none !important;"' ?>>
 <?php echo @$validation_error; ?>
 </div>
+<div class="successmsg" <?php echo !empty($successmsg) ? 'style="display: block !important;"' : 'style="display: none !important;"' ?>>
+<?php echo $successmsg; ?>
+</div>
 <table >
 <tbody>
 <tr><td>First name:</td> <td><input name="firstname" size="50"

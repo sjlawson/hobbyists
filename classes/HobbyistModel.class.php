@@ -5,22 +5,9 @@ spl_autoload_register(function($className) {
 
 define("HOBBYISTTABLE","hobbyists");
 
-class HobbyistModel {
+class HobbyistModel extends HobbyistFields {
 	private $dbConn;
-	private $_table = "hobbyists"; 
 	
-	//model properties
-	private $id;
-	private $firstname;
-	private $lastname;
-	private $email;
-	private $sex;
-	private $city;
-	private $state;
-	private $comments; 
-	private $hobby_cycling;
-	private $hobby_frisbee;
-	private $hobby_skiing;
 	private $reqd_fields = array('firstname',
 									'lastname',
 									'email',
@@ -35,6 +22,7 @@ class HobbyistModel {
 			throw new Exception($ex->getMessage(), $ex->getCode());
 		}
 	}
+	
 	
 	public function setParams($data) {
 		foreach ($data as $property => $value) {
@@ -52,6 +40,16 @@ class HobbyistModel {
 	
 	public function editHobbyist() {
 		try {
+			$sql = "UPDATE `".HOBBYISTTABLE."` SET ";
+			$hobbyistFields = get_class_vars('HobbyistFields');
+			foreach ($hobbyistFields as $property => $emptyvalue) {
+				if (!empty($property) && $property != 'id')
+					$sql .= "`$property`='{$this->$property}',";
+			}
+			$sql = rtrim($sql, ",");
+			$sql .= " WHERE `id`={$this->id}";
+			
+			return $this->dbConn->doUpdateQuery($sql);
 			
 		} catch (Exception $ex) {
 			throw new Exception($ex->getMessage(), $ex->getCode());
@@ -60,7 +58,20 @@ class HobbyistModel {
 
 	public function createHobbyist() {
 		try {
+			$sql = "INSERT INTO `".HOBBYISTTABLE."` ";
+			$hobbyistFields = get_class_vars('HobbyistFields');
+			$columns = "(";
+			$values = ") VALUES ";
+			foreach ($hobbyistFields as $property => $emptyvalue) {
+				if (!empty($property) && $property != 'id') {
+					$columns .= "`$property`,";
+					$values .= "'{$this->$property}',";
+				}
+			}
+
+			$sql .= rtrim($columns, ",") . rtrim($values, ",");
 			
+			return $this->dbConn->doInsertQuery($sql);
 		} catch (Exception $ex) {
 			throw new Exception($ex->getMessage(), $ex->getCode());
 		}

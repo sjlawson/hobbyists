@@ -39,7 +39,7 @@ if( !empty( $_POST )) {
 		// set validation error message
 		$validation_error = $validationResult["errmsg"];
 	} else {
-		$url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+		$url = "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'], '?'));
 		if(empty($save_data['id'])) {
 			$new_id = $hobbyistModel->createHobbyist();
 			if($new_id)

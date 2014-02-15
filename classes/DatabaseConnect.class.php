@@ -62,8 +62,10 @@ class DatabaseConnect {
 		try {
 			$result = $this->mysqliUtil->query($sql);
 			$return_id = mysqli_insert_id($this->mysqliUtil);
-			
-			return $return_id;
+			if(!mysqli_error($this->mysqliUtil))
+				return $return_id;
+			else 
+				echo mysqli_error($this->mysqliUtil);
 		} catch (Exception $ex) {
 			throw new Exception($ex->getMessage(), $ex->getCode());
 		}

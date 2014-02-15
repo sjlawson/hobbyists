@@ -4,7 +4,7 @@
  */
 
 /**
- * using autoload register is overkill, but an app like this might normally be parter of a larger whole in which using 
+ * using autoload register is overkill, but an app like this might be part of a larger whole in which using 
  * spl_autoload_register might be preferable
  * 
  */
@@ -33,16 +33,20 @@ if( !empty( $_POST )) {
 	$save_data['hobby_skiing'] = isset($_POST['hobby_skiing']) ? filter_input(INPUT_POST, 'hobby_skiing', FILTER_VALIDATE_INT) : 0;
 	
 	if(empty($save_data['id'] )) unset($save_data['id']);
-	$validationResult = $hobbyistModel->setParams($save_data);
+	$validationResult = $hobbyistModel->setProperties($save_data);
 	
 	if($validationResult !== true) {
 		// set validation error message
 		$validation_error = $validationResult["errmsg"];
 	} else {
+		$url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 		if(empty($save_data['id'])) {
-			$hobbyistModel->createHobbyist();
+			$new_id = $hobbyistModel->createHobbyist();
+			if($new_id)
+				header("Location: $url?id=$new_id&msg=savesuccess");
 		} else {
-			$hobbyistModel->editHobbyist();
+			if($hobbyistModel->editHobbyist())
+				header("Location: $url?id=$hobbyist_id&msg=savesuccess");
 		}
 	}
 	$hobbyist_data = $save_data;

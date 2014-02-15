@@ -8,12 +8,12 @@ define("HOBBYISTTABLE","hobbyists");
 class HobbyistModel extends HobbyistFields {
 	private $dbConn;
 	
-	private $reqd_fields = array('firstname',
+	private $required_fields = array('firstname',
 									'lastname',
 									'email',
 									'sex',
 									'city',
-									'state');
+									'state'); 
 	
 	public function __construct() {
 		try {
@@ -23,11 +23,15 @@ class HobbyistModel extends HobbyistFields {
 		}
 	}
 	
-	
-	public function setParams($data) {
+	/**
+	 * After data validation, assign to inherited class properties (fields)
+	 * @param array $data
+	 * @return multitype:string |boolean
+	 */
+	public function setProperties($data) {
 		foreach ($data as $property => $value) {
 			if(property_exists($this, $property)) {
-				if(in_array($property, $this->reqd_fields) && empty($value) ) {
+				if(in_array($property, $this->required_fields) && empty($value) ) {
 					return array("errmsg"=>"$property is required");
 				}
 				$this->$property = $value;
@@ -38,6 +42,11 @@ class HobbyistModel extends HobbyistFields {
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @throws Exception
+	 * @return boolean
+	 */
 	public function editHobbyist() {
 		try {
 			$sql = "UPDATE `".HOBBYISTTABLE."` SET ";
@@ -56,12 +65,17 @@ class HobbyistModel extends HobbyistFields {
 		}
 	}
 
+	/**
+	 * 
+	 * @throws Exception
+	 * @return number
+	 */
 	public function createHobbyist() {
 		try {
 			$sql = "INSERT INTO `".HOBBYISTTABLE."` ";
 			$hobbyistFields = get_class_vars('HobbyistFields');
 			$columns = "(";
-			$values = ") VALUES ";
+			$values = ") VALUES (";
 			foreach ($hobbyistFields as $property => $emptyvalue) {
 				if (!empty($property) && $property != 'id') {
 					$columns .= "`$property`,";
@@ -69,14 +83,20 @@ class HobbyistModel extends HobbyistFields {
 				}
 			}
 
-			$sql .= rtrim($columns, ",") . rtrim($values, ",");
-			
+			$sql .= rtrim($columns, ",") . rtrim($values, ",") .')';
+		
 			return $this->dbConn->doInsertQuery($sql);
 		} catch (Exception $ex) {
 			throw new Exception($ex->getMessage(), $ex->getCode());
 		}
 	}
 
+	/**
+	 * 
+	 * @param int $id
+	 * @throws Exception
+	 * @return array
+	 */
 	public function getHobbyist($id) {
 		$sql = "SELECT * FROM `".HOBBYISTTABLE."` WHERE `id`='$id'"; 
 		try {
@@ -87,10 +107,4 @@ class HobbyistModel extends HobbyistFields {
 		}
 	}
 
-	public function validateInput($save_data) {
-		
-		
-		
-	}
-	
 }

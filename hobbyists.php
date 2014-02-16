@@ -56,7 +56,7 @@ function editHobbyistCtl($hobbyistModel) {
 	$list = $hobbyistModel->getAllHobbyistsPaged();
 	$selectCtl = '<select id="select_hobbyist" size="20" style="width: 150px; margin-left: 10px;">';
 	foreach ($list as $row) {
-		$selected = $_GET['id'] == $row['id'] ? 'selected' : '';
+		$selected = @$_GET['id'] == $row['id'] ? 'selected' : '';
 	$selectCtl .= '<option onclick="loadHobbyist('.$row['id'].')" '.$selected.' >'.$row['lastname'].', '. $row['firstname'].'</option>';
 	
 	}

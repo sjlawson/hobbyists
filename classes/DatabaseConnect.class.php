@@ -4,11 +4,8 @@
  * @author samuel
  *
  */
-class DatabaseConnect {
-	private $host = 'localhost';
-	private $username = 'root';
-	private $database = 'sjlawson';
-	private $password = 'lawson2112';
+class DatabaseConnect extends DatabaseConfig {
+
 	private $mysqliUtil;
 	
 	public function __construct() {
@@ -18,6 +15,11 @@ class DatabaseConnect {
 			throw new Exception($ex->getMessage(), $ex->getCode());
 		} 
 	}
+	
+	private function loadConnectionProperties() {
+		
+	}
+	
 	
 	/**
 	 * 

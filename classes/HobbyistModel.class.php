@@ -1,8 +1,4 @@
 <?php
-spl_autoload_register(function($className) {
-	@require_once ("classes/$className.class.php");
-});
-
 define("HOBBYISTTABLE","hobbyists");
 define("PAGELIMIT", 20);
 

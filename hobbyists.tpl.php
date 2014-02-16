@@ -8,6 +8,9 @@
 	function loadHobbyist(id) {
 	document.location.href = "hobbyists.php?id="+id+"#manage";
 	}
+	function logout() {
+	document.location.href = "hobbyists.php?logout=1";
+	}
   </script>
 </head>
 <body>
@@ -24,6 +27,26 @@
 View/Edit Hobbyists <br />
 
 <?php echo editHobbyistCtl($hobbyistModel); ?>
+
+<div class="loginform" >
+<?php if(!@$user_auth) { ?>
+<h3>Login</h3>
+<form method="post">
+<fieldset>
+<p>
+Username: <br />
+<input id='login_username' name='login_username' type="text" />
+</p><p>
+Password: <br />
+<input id="login_password" name='login_password' type="password" />
+</p>
+<button onclick="login()">Login</button>
+</fieldset>
+</form>
+<?php } else { ?>
+<button onclick="logout()">Logout</button>
+<?php } ?>
+</div>
 
 </div>
 <div class="mid-right">
@@ -71,7 +94,12 @@ View/Edit Hobbyists <br />
 
 </tbody>
 </table>
+<?php if ($user_auth) { ?>
 <input type="submit" value="Save" /> &nbsp;&nbsp;&nbsp;&nbsp; <input type="reset" value="Reset" onclick="document.location.href='hobbyists.php';" />
+<?php } else {
+	echo "Please login to manage Hobbyists!";
+	
+}?>
 </fieldset>
 </form>
 </div>

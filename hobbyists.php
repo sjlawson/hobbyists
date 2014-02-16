@@ -2,6 +2,15 @@
 /* For this small application, this proceedural script will act as a controller as well as view
  * 
  */
+session_start();
+
+if(@$_GET['logout']) {
+	unset($_SESSION['auth']);
+	setcookie("username", "", time()-(60*60*24), "/");
+	header("Location: hobbyists.php");
+}
+
+$user_auth = (@$_SESSION['auth'] == 12345) ? true : false;
 
 /**
  * using autoload register is overkill, but an app like this might be part of a larger whole in which using 
@@ -13,11 +22,23 @@ spl_autoload_register(function($className) {
 });
 
 $hobbyistModel = new HobbyistModel();
-
 $hobbyist_id = isset($_GET['id']) ? filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) : null;
 $hobbyist_data = $hobbyist_id ? $hobbyistModel->getHobbyist($hobbyist_id) : null;
 
-if( !empty( $_POST )) {
+if( !empty( $_POST['login_username']) && !empty( $_POST['login_password'])) {
+	$username = filter_input(INPUT_POST, 'login_username', FILTER_SANITIZE_STRING);
+	$pass_hash = hash('sha256', filter_input(INPUT_POST, 'login_password', FILTER_SANITIZE_STRING));
+	
+	if( $username == "demo" && $pass_hash == 'fc2a9ae6fe8d2050df755f1738b783de2a3ac399e718530a44458f8274699e01'  )
+	{
+		$_SESSION['auth'] = 12345;
+		setcookie("username", $username, time()+(84600*30));
+		$user_auth = true;
+	}
+	else {
+		$validation_error = "ERROR: Incorrect username or password!";
+	}
+} elseif( !empty( $_POST ) ) {
 	//sanitize input
 	$save_data = array();
 	$save_data['id'] = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);

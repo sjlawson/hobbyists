@@ -112,7 +112,7 @@ class HobbyistModel extends HobbyistFields {
 	 */
 	public function getAllHobbyistsPaged($page = 1) {
 			$offset = ($page-1) * PAGELIMIT;
-			$sql = "SELECT `id`,`firstname`,`lastname` FROM `".HOBBYISTTABLE."` LIMIT $offset,".PAGELIMIT;
+			$sql = "SELECT `id`,`firstname`,`lastname` FROM `".HOBBYISTTABLE."` ORDER BY `lastname` ASC LIMIT $offset,".PAGELIMIT;
 			try {
 				$result_array= $this->dbConn->doMultiRowGetQuery($sql);
 				return $result_array;

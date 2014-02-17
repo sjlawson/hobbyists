@@ -8,6 +8,7 @@ class DatabaseConnect extends DatabaseConfig {
 
 	private $mysqliUtil;
 	
+	//TODO this works well enough for this small app, but I might have decided on a singleton pattern here
 	public function __construct() {
 		try {
 			$this->mysqliUtil = mysqli_connect($this->host, $this->username, $this->password, $this->database);

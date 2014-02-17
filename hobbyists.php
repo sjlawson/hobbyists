@@ -1,5 +1,5 @@
 <?php
-/* For this small application, this proceedural script will act as a controller as well as view
+/* For this small application, this proceedural script contains some controller and view behaviours 
  * 
  */
 session_start();
@@ -21,6 +21,7 @@ spl_autoload_register(function($className) {
 	@require_once ("classes/$className.class.php");
 });
 
+//TODO: use factory design pattern
 $hobbyistModel = new HobbyistModel();
 $hobbyist_id = isset($_GET['id']) ? filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) : null;
 $hobbyist_data = $hobbyist_id ? $hobbyistModel->getHobbyist($hobbyist_id) : null;

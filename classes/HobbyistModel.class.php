@@ -2,7 +2,7 @@
 define("HOBBYISTTABLE","hobbyists");
 define("PAGELIMIT", 20);
 
-class HobbyistModel extends HobbyistFields {
+class HobbyistModel extends HobbyistFields implements IHobbyistModel {
 	private $dbConn;
 	
 	private $required_fields = array('firstname',

@@ -21,10 +21,11 @@ $user_auth = (@$_SESSION['auth'] == 12345) ? true : false;
  */
 spl_autoload_register(function($className) {
 	@require_once ("classes/$className.class.php");
+	@require_once ("IHobbyistModel.php");
 });
 
 //TODO: use factory design pattern
-$hobbyistModel = new HobbyistModel();
+$hobbyistModel = HobbyistModelFactory::Create();
 $hobbyist_id = isset($_GET['id']) ? filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) : null;
 $hobbyist_data = $hobbyist_id ? $hobbyistModel->getHobbyist($hobbyist_id) : null;
 

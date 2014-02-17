@@ -4,6 +4,8 @@
  */
 session_start();
 
+//TODO: move all authentication functionalities to a User class. 
+// (authentication was added after learning the apache server was not setup to allow for htpassword directory-based authentication) 
 if(@$_GET['logout']) {
 	unset($_SESSION['auth']);
 	setcookie("username", "", time()-(60*60*24), "/");

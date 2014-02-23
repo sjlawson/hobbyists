@@ -42,7 +42,7 @@ if( !empty( $_POST['login_username']) && !empty( $_POST['login_password'])) {
 	else {
 		$validation_error = "ERROR: Incorrect username or password!";
 	}
-} elseif( !empty( $_POST ) ) {
+} elseif( !empty( $_POST ) && $user_auth) {
 	//sanitize input
 	$save_data = array();
 	$save_data['id'] = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
@@ -77,6 +77,11 @@ if( !empty( $_POST['login_username']) && !empty( $_POST['login_password'])) {
 	$hobbyist_data = $save_data;
 }
 
+/**
+ * 
+ * @param $hobbyistModel
+ * @return string
+ */
 function editHobbyistCtl($hobbyistModel) {
 	$list = $hobbyistModel->getAllHobbyistsPaged();
 	$selectCtl = '<select id="select_hobbyist" size="20" style="width: 150px; margin-left: 10px;">';

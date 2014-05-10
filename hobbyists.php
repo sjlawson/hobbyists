@@ -36,7 +36,7 @@ if( !empty( $_POST['login_username']) && !empty( $_POST['login_password'])) {
     if( $username == "demo" && $pass_hash == 'fc2a9ae6fe8d2050df755f1738b783de2a3ac399e718530a44458f8274699e01'  )
     {
         $_SESSION['auth'] = 12345;
-        setcookie("username", $username, time()+(84600*30));
+        setcookie("username", $username, time()+(86400*30));
         $user_auth = true;
     }
     else {
